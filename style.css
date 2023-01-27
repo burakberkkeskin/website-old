@@ -1,0 +1,99 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* This will make the body take up the full height of the viewport */
+  position: relative; /*  This is needed for the icon positioning */
+  font-weight: bold;
+}
+
+.cloud-icon,
+.server-icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1; /* This will make the icons appear behind the header and footer */
+}
+
+.cloud-icon {
+  background-image: url('cloud-icon.png'); /* This should be the url or the path of your cloud icon image */
+  background-repeat: no-repeat;
+  background-position: bottom right;
+}
+
+.server-icon {
+  background-image: url('server-icon.png'); /* This should be the url or the path of your server icon image */
+  background-repeat: no-repeat;
+  background-position: top left;
+}
+
+header {
+  background-color: #3f51b5;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 1; /* This will make the header appear on top of the icons */
+}
+
+header h1 {
+  margin: 0;
+}
+
+.content {
+  padding: 20px;
+  text-align: center;
+}
+
+footer {
+  background-color: #3f51b5;
+  color: white;
+  text-align: center;
+  padding: 10px;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  z-index: 1; /* This will make the footer appear on top of the icons */
+  display: flex;
+  justify-content: center;
+}
+
+.social-links {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.social-links a {
+  color: white;
+  text-decoration: none;
+  padding: 10px;
+}
+.penguin-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200px; /* adjust the width of the icon */
+  height: 200px; /* adjust the height of the icon */
+  margin-top: -100px; /* adjust the top position of the icon */
+  margin-left: -100px; /* adjust the left position of the icon */
+  background-image: url('penguin-icon.png'); /* This should be the url or the path of your penguin icon image */
+  background-repeat: no-repeat;
+  background-position: center center;
+  z-index: -1; /* This will make the icon appear behind the header and footer */
+}
+
+.signature {
+  font-size: 12px;
+  text-align: center;
+  color: gray;
+}
