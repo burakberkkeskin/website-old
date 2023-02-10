@@ -2,12 +2,11 @@ pipeline {
   agent any
   environment {
     DOCKERHUB_CREDENTIALS = credentials('dockerhub')
-    COMMIT_HASH_SHORT = GIT_COMMIT.take(7)
   }
   stages {
     stage('Build image') {
       steps {
-        sh 'docker buildx build -t safderun/website:latest -t safderun/website/${COMMIT_HASH_SHORT} .'
+        sh 'docker buildx build -t safderun/website:latest -t safderun/website/${GIT_REVISION,length=6} .'
       }
     }
     stage('Test image') {
