@@ -8,9 +8,7 @@ pipeline {
     }
     stage('Build image') {
       steps {
-        script {
-          def app = docker.build("safderun/website")
-        }
+        sh 'docker build -t safderun/website .'
       }
     }
     stage('Test image') {
@@ -20,12 +18,10 @@ pipeline {
     }
     stage('Deploy image') {
       steps {
-        script {
-          docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
-            app.push("${env.BUILD_NUMBER}")
-            app.push("latest")
-          }
-        }
+        sh 'docker tag safderun/website safderun/website:latest'
+        sh 'docker tag  safderun/website safderun/website:${GIT_COMMIT}'
+        sh 'docker login -u $DOCKER_USER -p $DOCKER_PASS'
+        sh 'docker push safderun/website'
       }
     }
   }
