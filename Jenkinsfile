@@ -2,11 +2,12 @@ pipeline {
   agent any
   environment {
     DOCKERHUB_CREDENTIALS = credentials('dockerhub')
+    tag = sh(returnStdout: true, script: "git rev-parse --short=10 HEAD").trim()
   }
   stages {
     stage('Build image') {
       steps {
-        sh 'docker build -t safderun/website:latest -t safderun/website:${GIT_BRANCH}-${GIT_COMMIT} .'
+        sh 'docker build -t safderun/website:latest -t safderun/website:${GIT_BRANCH}-${tag} .'
       }
     }
     stage('Test image') {
