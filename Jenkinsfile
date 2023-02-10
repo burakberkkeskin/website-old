@@ -6,7 +6,7 @@ pipeline {
   stages {
     stage('Build image') {
       steps {
-        sh 'docker build -t safderun/website:latest -t safderun/website:${GIT_COMMIT} .'
+        sh 'docker build -t safderun/website:latest -t safderun/website:${GIT_BRANCH}-${GIT_COMMIT} .'
       }
     }
     stage('Test image') {
