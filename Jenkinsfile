@@ -17,7 +17,7 @@ pipeline {
     stage('Deploy image') {
       steps {
         sh 'docker tag safderun/website safderun/website:latest'
-        sh 'docker tag  safderun/website safderun/website:${GIT_COMMIT}'
+        sh 'docker tag  safderun/website safderun/website:${GIT_REVISION,length=6}'
         sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin '
         sh 'docker push safderun/website'
       }
