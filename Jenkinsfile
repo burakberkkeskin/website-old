@@ -2,7 +2,7 @@ pipeline {
   agent any
   environment {
     DOCKERHUB_CREDENTIALS = credentials('dockerhub')
-    tag = sh(returnStdout: true, script: "git rev-parse --short=10 HEAD").trim()
+    tag = sh(returnStdout: true, script: "git rev-parse --short=6 HEAD").trim()
   }
   stages {
     stage('Build image') {
