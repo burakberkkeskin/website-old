@@ -2,14 +2,16 @@ pipeline {
   agent any
   environment {
     DOCKERHUB_CREDENTIALS = credentials('dockerhub')
-    // short commit hash
-    SHORT_COMMIT = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+    GIT_COMMIT_SHORT = sh(
+                script: "printf \$(git rev-parse --short ${GIT_COMMIT})",
+                returnStdout: true
+        )
   }
   stages {
     stage('Build image') {
       steps {
         // buildx build latest and short commit hash
-        sh 'docker buildx build -t safderun/website:latest -t safderun/website:${SHORT_COMMIT} .'
+        sh 'docker buildx build -t safderun/website:latest -t safderun/website:${GIT_COMMIT_SHORT} .'
       }
     }
     stage('Test image') {
