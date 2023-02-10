@@ -6,8 +6,7 @@ pipeline {
   stages {
     stage('Build image') {
       steps {
-        // buildx build latest and short commit hash
-        sh 'docker buildx build -t safderun/website:latest -t safderun/website:${GIT_COMMIT} .'
+        sh 'docker build -t safderun/website:latest -t safderun/website:${GIT_COMMIT} .'
       }
     }
     stage('Test image') {
