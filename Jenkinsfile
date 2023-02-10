@@ -1,15 +1,21 @@
+// build and push docker image jenkins file 
 pipeline {
   agent any
   stages {
-    stage('Build') {
+    def app
+    stage ('Checkout') {
       steps {
-        sh 'echo "Building!"'
+        checkout scm
       }
     }
-    stage('Deploy') {
-      steps {
-        sh 'echo "Deploying!"'
-      }
+    stage('Build') {
+      app = docker.build('safderun/website')
+    }
+    stage('Push') {
+      docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials' {
+        app.push("${env.BUILD_NUMBER}")
+        app.push('latest')
+      })
     }
   }
 }
