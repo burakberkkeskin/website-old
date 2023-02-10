@@ -2,7 +2,7 @@ pipeline {
   agent any
   environment {
     DOCKERHUB_CREDENTIALS = credentials('dockerhub')
-    COMMIT_HASH_SHORT = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+    COMMIT_HASH_SHORT = GIT_COMMIT.take(7)
   }
   stages {
     stage('Build image') {
