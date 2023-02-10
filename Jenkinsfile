@@ -2,11 +2,12 @@ pipeline {
   agent any
   environment {
     DOCKERHUB_CREDENTIALS = credentials('dockerhub')
+    COMMIT_HASH_SHORT = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
   }
   stages {
     stage('Build image') {
       steps {
-        sh 'docker build -t safderun/website .'
+        sh 'docker buildx build -t safderun/website:latest -t safderun/website/${COMMIT_HASH_SHORT} .'
       }
     }
     stage('Test image') {
@@ -16,10 +17,8 @@ pipeline {
     }
     stage('Deploy image') {
       steps {
-        sh 'docker tag safderun/website safderun/website:latest'
-        sh 'docker tag  safderun/website safderun/website:${GIT_REVISION,length=6}'
         sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin '
-        sh 'docker push safderun/website'
+        sh 'docker push safderun/website -a'
       }
     }
   }
