@@ -25,7 +25,7 @@ pipelines:
           script:
             - export IMAGE_NAME=safderun/bitbucket-website:$BITBUCKET_COMMIT
             - docker build -t ${IMAGE_NAME} .
-            - docker login --username safderun --password $DOCKERHUB_PASSWD
+            - docker login --username safderun --password $DOCKERHUB_TOKEN
             - docker push $IMAGE_NAME
           services:
             - docker
