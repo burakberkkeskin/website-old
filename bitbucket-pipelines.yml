@@ -10,45 +10,37 @@ image: atlassian/default-image:3
 
 pipelines:
   default:
-    - parallel:
-        - step:
-            name: Build and Test
-            script:
-              - IMAGE_NAME=$BITBUCKET_REPO_SLUG
-              - docker build . --file Dockerfile --tag ${IMAGE_NAME}
-            services:
-              - docker
-            caches:
-              - docker
-        - step:
-            name: Lint the Dockerfile
-            image: hadolint/hadolint:latest-debian
-            script:
-              - hadolint Dockerfile
+    - step:
+        name: Build and Test
+        image: node:10.15.0
+        caches:
+          - node
+        script:
+          - npm install
+          - npm test
   branches:
     master:
       - step:
           name: Build and Test
           script:
-            - IMAGE_NAME=$BITBUCKET_REPO_SLUG
-            - docker build . --file Dockerfile --tag ${IMAGE_NAME}
-            - docker save ${IMAGE_NAME} --output "${IMAGE_NAME}.tar"
+            - export IMAGE_NAME=safderun/bitbucket-website:$BITBUCKET_COMMIT
+            - docker build -t ${IMAGE_NAME} .
+            - docker login --username safderun --password $DOCKERHUB_PASSWD
+            - docker push $IMAGE_NAME
           services:
             - docker
           caches:
             - docker
-          artifacts:
-            - "*.tar"
-      - step:
-          name: Deploy to Production
-          deployment: Production
-          script:
-            - echo ${DOCKERHUB_PASSWORD} | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
-            - IMAGE_NAME=$BITBUCKET_REPO_SLUG
-            - docker load --input "${IMAGE_NAME}.tar"
-            - VERSION="prod-0.1.${BITBUCKET_BUILD_NUMBER}"
-            - IMAGE=${DOCKERHUB_NAMESPACE}/${IMAGE_NAME}
-            - docker tag "${IMAGE_NAME}" "${IMAGE}:${VERSION}"
-            - docker push "${IMAGE}:${VERSION}"
-          services:
-            - docker
+      # - step:
+      #     name: Deploy to Production
+      #     deployment: Production
+      #     script:
+      #       - echo ${DOCKERHUB_PASSWORD} | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
+      #       - IMAGE_NAME=$BITBUCKET_REPO_SLUG
+      #       - docker load --input "${IMAGE_NAME}.tar"
+      #       - VERSION="prod-0.1.${BITBUCKET_BUILD_NUMBER}"
+      #       - IMAGE=${DOCKERHUB_NAMESPACE}/${IMAGE_NAME}
+      #       - docker tag "${IMAGE_NAME}" "${IMAGE}:${VERSION}"
+      #       - docker push "${IMAGE}:${VERSION}"
+      #     services:
+      #       - docker
