@@ -18,6 +18,8 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Set up Gomplate
+        run: sudo curl -L -o /usr/bin https://github.com/hairyhenderson/gomplate/releases/download/v3.11.5/gomplate_linux-amd64
       - name: Bump version
         run: version=$(git describe --tags --abbrev=0) gomplate -f index.html.tmpl -o index.html
       - name: Build and Push
