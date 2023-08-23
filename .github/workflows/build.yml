@@ -29,6 +29,6 @@ jobs:
       - name: Build and Push
         uses: docker/build-push-action@v4
         with:
-          platforms: linux/amd64,linux/arm/v7,linux/arm64,darwin/amd64,darwin/arm64
+          platforms: linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6
           push: true
           tags: safderun/website:latest,safderun/website:${{ github.ref_name }}
