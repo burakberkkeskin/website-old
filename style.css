@@ -62,7 +62,8 @@ footer {
   width: 100%;
   z-index: 1; /* This will make the footer appear on top of the icons */
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
+  align-items: center;
 }
 
 .social-links {
