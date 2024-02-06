@@ -14,7 +14,6 @@ I use this image to test networks between client and servers.
 
 ```bash
 ## Build the image with a version
-version=$(git describe --tags --abbrev=0) gomplate -f index.html.tmpl -o index.html
 docker build -t website:latest .
 
 ## Run the local builded image
